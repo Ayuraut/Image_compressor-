@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OptiSqueeze | Premium Client-Side Image Compressor</title>
+  <meta name="description" content="Compress your JPG, PNG, and WebP images client-side instantly with high-fidelity quality options. No server uploads, 100% secure.">
+  
+  <!-- Modern Typography (Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- JS Libraries via CDN (browser-image-compression & JSZip) -->
+  <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+  
+  <div class="glass-bg-glow"></div>
+  
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <div class="logo-text">
+          <h1>Opti<span>Squeeze</span></h1>
+          <span class="logo-tagline">Secure Local Compression</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <!-- Mandatory CTA Button labeled EXACTLY "Built for Digital Heroes" -->
+        <a href="https://digitalheroesco.com" target="_blank" rel="noopener noreferrer" class="hero-cta-btn" id="digital-heroes-cta">
+          <svg class="hero-cta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
+            <line x1="12" y1="22" x2="12" y2="15.5"/>
+            <polyline points="22 8.5 12 15.5 2 8.5"/>
+            <polyline points="2 15.5 12 8.5 22 15.5"/>
+            <line x1="12" y1="2" x2="12" y2="8.5"/>
+          </svg>
+          <span>Built for Digital Heroes</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="app-main">
+      
+      <!-- Left Column: Controls & Upload -->
+      <section class="control-panel">
+        
+        <!-- Drag & Drop Upload Card -->
+        <div class="card upload-card">
+          <div class="drop-zone" id="drop-zone">
+            <input type="file" id="file-input" multiple accept="image/jpeg, image/png, image/webp" class="file-input-hidden">
+            <div class="drop-zone-content">
+              <div class="upload-icon-container">
+                <svg class="upload-cloud-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              </div>
+              <h3>Drag & drop your images</h3>
+              <p>Supports PNG, JPG, JPEG, and WebP formats</p>
+              <button class="btn btn-primary" id="browse-btn">
+                <span>Browse Files</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compression Settings Card -->
+        <div class="card settings-card">
+          <div class="card-header">
+            <svg class="card-header-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <h2>Compression Configuration</h2>
+          </div>
+          
+          <div class="settings-body">
+            <!-- Quality Slider -->
+            <div class="control-group">
+              <div class="control-label-row">
+                <label for="quality-slider">Compression Quality</label>
+                <span class="value-badge" id="quality-value">80%</span>
+              </div>
+              <div class="slider-container">
+                <input type="range" id="quality-slider" min="1" max="100" value="80" class="range-slider">
+              </div>
+              <div class="quality-indicator-row">
+                <span id="quality-desc" class="quality-desc text-muted">Recommended (Balanced Quality/Size)</span>
+              </div>
+            </div>
+
+            <!-- Output Format Options -->
+            <div class="control-group">
+              <label for="format-select">Convert Format</label>
+              <div class="select-wrapper">
+                <select id="format-select" class="form-select">
+                  <option value="original" selected>Keep Original Format</option>
+                  <option value="webp">Convert to WebP (Recommended)</option>
+                  <option value="jpeg">Convert to JPEG</option>
+                  <option value="png">Convert to PNG (Lossless)</option>
+                </select>
+              </div>
+              <p class="field-info" id="format-info">PNG outputs cannot be compressed without format conversion. Choose WebP for maximum savings.</p>
+            </div>
+
+            <!-- Advanced Max Resolution Option -->
+            <div class="control-group">
+              <label for="resize-select">Max Resolution Limit</label>
+              <div class="select-wrapper">
+                <select id="resize-select" class="form-select">
+                  <option value="original" selected>Original Dimensions</option>
+                  <option value="3840">4K Ultra HD (3840px max)</option>
+                  <option value="1920">Full HD (1920px max)</option>
+                  <option value="1280">HD (1280px max)</option>
+                  <option value="800">Mobile Web Friendly (800px max)</option>
+                </select>
+              </div>
+              <p class="field-info">Shrinking large photos (like 4000px+ DSLR shots) offers massive extra file size savings.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Global Summary & Actions (Hidden until items are loaded) -->
+        <div class="card summary-card hidden" id="summary-card">
+          <div class="summary-details">
+            <div class="stat-box">
+              <span class="stat-label">Original Total</span>
+              <span class="stat-val" id="total-original-size">0.00 MB</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-box">
+              <span class="stat-label">Compressed Total</span>
+              <span class="stat-val text-savings" id="total-compressed-size">0.00 MB</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-box">
+              <span class="stat-label">Total Savings</span>
+              <span class="savings-percent-badge" id="total-savings-percent">0% Saved</span>
+            </div>
+          </div>
+          
+          <div class="action-grid">
+            <button class="btn btn-success btn-full" id="download-zip-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Download All as ZIP</span>
+            </button>
+            <button class="btn btn-secondary btn-outline" id="clear-all-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                <line x1="10" y1="11" x2="10" y2="17"/>
+                <line x1="14" y1="11" x2="14" y2="17"/>
+              </svg>
+              <span>Clear Queue</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Column: Queue & Previews -->
+      <section class="queue-panel">
+        <div class="card queue-card">
+          <div class="queue-header-row">
+            <div class="queue-title-group">
+              <h2>Processing Queue</h2>
+              <span class="queue-count-badge" id="queue-count">0 files</span>
+            </div>
+            <div class="queue-actions-inline hidden" id="queue-actions-inline">
+              <!-- Inline Compress trigger -->
+              <button class="btn btn-sm btn-primary" id="recompress-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="spin-icon">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                </svg>
+                <span>Re-compress All</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Empty Queue Placeholder -->
+          <div class="empty-queue-placeholder" id="empty-queue-placeholder">
+            <div class="empty-icon-wrapper">
+              <svg class="empty-images-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+            </div>
+            <p class="empty-title">Queue is empty</p>
+            <p class="empty-desc">Upload files on the left to start compressing. Your files never leave your browser for maximum privacy.</p>
+          </div>
+
+          <!-- Queue List Grid -->
+          <div class="queue-grid hidden" id="queue-grid">
+            <!-- Dynamic elements loaded by app.js will render here -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-left">
+          <p class="app-info">&copy; 2026 OptiSqueeze. 100% Secure Client-Side Image Compression.</p>
+          <!-- Mandatory developer name & email clearly visible -->
+          <p class="developer-info">Developed by: <span class="highlight-text">Ayushree Raut</span> &bull; Contact: <a href="mailto:ayushreeraut76@gmail.com" class="footer-link">ayushreeraut76@gmail.com</a></p>
+        </div>
+        <div class="footer-right">
+          <span class="security-shield">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            No Uploads &bull; Fully Local
+          </span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Dynamic Application logic -->
+  <script src="app.js"></script>
+</body>
+</html>
